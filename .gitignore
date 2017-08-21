@@ -1,0 +1,8 @@
+target/
+var/
+.idea/
+*.iml
+dependency-reduced-pom.xml
+/*.log
+*.pyc
+.DS_Store
