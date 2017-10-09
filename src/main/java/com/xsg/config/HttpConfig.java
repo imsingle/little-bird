@@ -19,7 +19,7 @@ public class HttpConfig {
     public static final String CONFIG_KEY_READ_TIMEOUT = "little.bird.http.read.timeout.ms";
     public static final String CONFIG_KEY_WRITE_TIMEOUT = "little.bird.http.write.timeout.ms";
 
-    private static final String CONFIG_FILE = "src/main/java/resources/httpclient.properties";
+    private static final String CONFIG_FILE = "/birdhttpclient.properties";
     private Properties properties;
 
     private String conn_timeout_ms;
@@ -35,6 +35,8 @@ public class HttpConfig {
             if (System.getProperty(CONFIG_KEY_CONN_TIMEOUT) != null) conn_timeout_ms = System.getProperty(CONFIG_KEY_CONN_TIMEOUT);
             if (System.getProperty(CONFIG_KEY_READ_TIMEOUT) != null) System.getProperty(CONFIG_KEY_READ_TIMEOUT);
             if (System.getProperty(CONFIG_KEY_WRITE_TIMEOUT) != null) System.getProperty(CONFIG_KEY_WRITE_TIMEOUT);
+
+            //载入http配置
             load();
             if (!properties.isEmpty()) {
                 if (StringUtils.isBlank(conn_timeout_ms)) conn_timeout_ms = properties.getProperty(CONFIG_KEY_CONN_TIMEOUT);
@@ -53,21 +55,15 @@ public class HttpConfig {
     }
 
     private void load() throws FileNotFoundException {
-        File file;
-        if (!(file = new File(CONFIG_FILE)).exists()) {
+        InputStream inputStream = getClass().getResourceAsStream(CONFIG_FILE);
+        if (inputStream == null) {
             throw new FileNotFoundException();
         }
-        InputStream inputStream = new FileInputStream(file);
         properties = new Properties();
         try {
             properties.load(inputStream);
         } catch (IOException e) {
             log.error("load http config file failed", e);
         }
-    }
-
-    public static void main(String[] args) {
-        HttpConfig httpConfig = HttpConfig.of();
-        System.out.println(httpConfig);
     }
 }

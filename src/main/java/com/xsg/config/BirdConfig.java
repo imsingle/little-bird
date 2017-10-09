@@ -1,13 +1,17 @@
 package com.xsg.config;
 
+import lombok.Data;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author xue shengguo
  * @datetime 17/8/10 下午5:29
  */
+@Data
 public class BirdConfig {
-    private int HTTP_CONN_TIMEOUT;
+    private String tag;
+    private String url;
     private ConcurrentHashMap<String, String> properties = new ConcurrentHashMap();
 
     private BirdConfig () {
